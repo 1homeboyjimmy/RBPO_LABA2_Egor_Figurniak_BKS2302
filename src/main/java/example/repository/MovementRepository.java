@@ -2,5 +2,8 @@ package example.repository;
 
 import example.entity.Movement;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MovementRepository extends JpaRepository<Movement, Long> {}
+@Repository
+public interface MovementRepository extends JpaRepository<Movement, Long> {
+}

@@ -1,53 +1,47 @@
 package example.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "movements")
+@Getter
+@Setter
 public class Movement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "from_warehouse_id")
-    private Long fromWarehouseId;
+    @ManyToOne
+    @JoinColumn(name = "from_warehouse_id")
+    private Warehouse fromWarehouse;
 
-    @Column(name = "to_warehouse_id")
-    private Long toWarehouseId;
+    @ManyToOne
+    @JoinColumn(name = "to_warehouse_id")
+    private Warehouse toWarehouse;
 
-    @Column(name = "item_id")
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
 
+    @Column(nullable = false)
     private int quantity;
+
+    @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    public Movement() {}
-
-    public Movement(Long fromWarehouseId, Long toWarehouseId, Long itemId, int quantity) {
-        this.fromWarehouseId = fromWarehouseId;
-        this.toWarehouseId = toWarehouseId;
-        this.itemId = itemId;
-        this.quantity = quantity;
+    public Movement() {
         this.timestamp = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Long getFromWarehouseId() { return fromWarehouseId; }
-    public void setFromWarehouseId(Long fromWarehouseId) { this.fromWarehouseId = fromWarehouseId; }
-
-    public Long getToWarehouseId() { return toWarehouseId; }
-    public void setToWarehouseId(Long toWarehouseId) { this.toWarehouseId = toWarehouseId; }
-
-    public Long getItemId() { return itemId; }
-    public void setItemId(Long itemId) { this.itemId = itemId; }
-
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+    public Movement(Warehouse fromWarehouse, Warehouse toWarehouse, Item item, int quantity) {
+        this.fromWarehouse = fromWarehouse;
+        this.toWarehouse = toWarehouse;
+        this.item = item;
+        this.quantity = quantity;
+        this.timestamp = LocalDateTime.now();
+    }
 }

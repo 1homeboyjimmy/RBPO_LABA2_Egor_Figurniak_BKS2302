@@ -1,0 +1,107 @@
+{
+  "info": {
+    "name": "Warehouse API - Business Operations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Stocks",
+      "item": [
+        {
+          "name": "Reserve item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/reserve?warehouseId=5&itemId=1&quantity=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "reserve"],
+              "query": [
+                {"key": "warehouseId", "value": "5"},
+                {"key": "itemId", "value": "1"},
+                {"key": "quantity", "value": "5"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get stocks by warehouse",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/warehouse/5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "warehouse", "5"]
+            }
+          }
+        },
+        {
+          "name": "Get low stock items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/low-stock?threshold=15",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "low-stock"],
+              "query": [
+                {"key": "threshold", "value": "15"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check threshold",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/check-threshold?warehouseId=5&itemId=1&threshold=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "check-threshold"],
+              "query": [
+                {"key": "warehouseId", "value": "5"},
+                {"key": "itemId", "value": "1"},
+                {"key": "threshold", "value": "5"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Movements",
+      "item": [
+        {
+          "name": "Move item",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/move?fromWarehouseId=3&toWarehouseId=5&itemId=1&quantity=10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "move"],
+              "query": [
+                {"key": "fromWarehouseId", "value": "3"},
+                {"key": "toWarehouseId", "value": "5"},
+                {"key": "itemId", "value": "1"},
+                {"key": "quantity", "value": "10"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

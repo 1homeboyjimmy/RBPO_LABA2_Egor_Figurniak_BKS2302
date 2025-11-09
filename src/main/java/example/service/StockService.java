@@ -1,7 +1,8 @@
 package example.service;
 
-import example.entity.Stock;
-import example.repository.StockRepository;
+import example.entity.*;
+import example.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +15,24 @@ public class StockService {
     @Autowired
     private StockRepository stockRepo;
 
-    // Получить все остатки
+    @Autowired
+    private WarehouseRepository warehouseRepo;
+
+    @Autowired
+    private ItemRepository itemRepo;
+
+    @Autowired
+    private MovementRepository movementRepo;
+
     public List<Stock> getAllStocks() {
         return stockRepo.findAll();
     }
 
-    // Получить один остаток по ID
     public Stock getStockById(Long id) {
         Optional<Stock> stockOpt = stockRepo.findById(id);
-        return stockOpt.orElse(null); // если нет — вернёт null
+        return stockOpt.orElse(null);
     }
 
-    // Создать новый остаток
     public Stock createStock(Stock stock) {
         if (stock.getQuantity() < 0) {
             throw new IllegalArgumentException("Количество не может быть отрицательным!");
@@ -33,24 +40,22 @@ public class StockService {
         return stockRepo.save(stock);
     }
 
-    // Обновить остаток
     public Stock updateStock(Long id, Stock updatedStock) {
         Stock existing = stockRepo.findById(id).orElse(null);
         if (existing != null) {
-            existing.setWarehouseId(updatedStock.getWarehouseId());
-            existing.setItemId(updatedStock.getItemId());
+            existing.setWarehouse(updatedStock.getWarehouse());
+            existing.setItem(updatedStock.getItem());
             existing.setQuantity(updatedStock.getQuantity());
             return stockRepo.save(existing);
         }
-        return null; // не найдено
+        return null;
     }
 
-    // Удалить остаток
     public void deleteStock(Long id) {
         stockRepo.deleteById(id);
     }
 
-    // Перемещение товара между складами
+    @Transactional
     public boolean moveItem(Long fromWarehouseId, Long toWarehouseId, Long itemId, int quantity) {
         // 1. Проверяем, есть ли нужное количество на исходном складе
         Stock fromStock = stockRepo.findByWarehouseIdAndItemId(fromWarehouseId, itemId);
@@ -58,25 +63,53 @@ public class StockService {
             return false; // недостаточно товара
         }
 
-        // 2. Находим или создаём остаток на целевом складе
         Stock toStock = stockRepo.findByWarehouseIdAndItemId(toWarehouseId, itemId);
         if (toStock == null) {
-            toStock = new Stock(toWarehouseId, itemId, quantity);
+            toStock = new Stock();
+            toStock.setWarehouse(warehouseRepo.findById(toWarehouseId).orElse(null));
+            toStock.setItem(itemRepo.findById(itemId).orElse(null));
+            toStock.setQuantity(quantity);
         } else {
             toStock.setQuantity(toStock.getQuantity() + quantity);
         }
 
-        // 3. Уменьшаем количество на исходном складе
         fromStock.setQuantity(fromStock.getQuantity() - quantity);
 
-        // 4. Сохраняем изменения
         stockRepo.save(fromStock);
         stockRepo.save(toStock);
 
-        // 5. Логируем движение (можно добавить сохранение в MovementRepository)
-        // Movement movement = new Movement(fromWarehouseId, toWarehouseId, itemId, quantity);
-        // movementRepo.save(movement); ← если добавишь movementRepo
+        Movement movement = new Movement();
+        movement.setFromWarehouse(warehouseRepo.findById(fromWarehouseId).orElse(null));
+        movement.setToWarehouse(warehouseRepo.findById(toWarehouseId).orElse(null));
+        movement.setItem(itemRepo.findById(itemId).orElse(null));
+        movement.setQuantity(quantity);
+        movementRepo.save(movement);
 
         return true;
+    }
+
+    @Transactional
+    public boolean reserveItem(Long warehouseId, Long itemId, int quantity) {
+        Stock stock = stockRepo.findByWarehouseIdAndItemId(warehouseId, itemId);
+        if (stock == null || stock.getQuantity() < quantity) {
+            return false;
+        }
+        stock.setQuantity(stock.getQuantity() - quantity);
+        stockRepo.save(stock);
+        return true;
+    }
+
+    public boolean isBelowThreshold(Long warehouseId, Long itemId, int threshold) {
+        Stock stock = stockRepo.findByWarehouseIdAndItemId(warehouseId, itemId);
+        if (stock == null) return true;
+        return stock.getQuantity() < threshold;
+    }
+
+    public List<Stock> getStocksByWarehouse(Long warehouseId) {
+        return stockRepo.findByWarehouseId(warehouseId);
+    }
+
+    public List<Stock> getLowStockItems(int threshold) {
+        return stockRepo.findByQuantityLessThan(threshold);
     }
 }

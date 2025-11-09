@@ -1,16 +1,25 @@
 package example.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "warehouses")
+@Table(
+        name = "warehouses",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name"})
+)
+@Getter
+@Setter
 public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
+
     private String location;
 
     public Warehouse() {}
@@ -19,13 +28,4 @@ public class Warehouse {
         this.name = name;
         this.location = location;
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
 }
