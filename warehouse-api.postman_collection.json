@@ -1,27 +1,279 @@
 {
   "info": {
-    "name": "Warehouse API - Business Operations",
+    "name": "Warehouse API - Full Operations",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
+      "name": "Items",
+      "item": [
+        {
+          "name": "Get all items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/items",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "items"]
+            }
+          }
+        },
+        {
+          "name": "Create item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ноутбук\",\n  \"description\": \"Игровой\",\n  \"category\": \"Электроника\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/items",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "items"]
+            }
+          }
+        },
+        {
+          "name": "Update item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ноутбук обновлённый\",\n  \"description\": \"Игровой\",\n  \"category\": \"Электроника\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/items/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "items", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/items/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "items", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Warehouses",
+      "item": [
+        {
+          "name": "Get all warehouses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/warehouses",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "warehouses"]
+            }
+          }
+        },
+        {
+          "name": "Create warehouse",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Склад 1\",\n  \"location\": \"Москва\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/warehouses",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "warehouses"]
+            }
+          }
+        },
+        {
+          "name": "Update warehouse (rename)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Склад 1 обновлённый\",\n  \"location\": \"Москва\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/warehouses/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "warehouses", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete warehouse",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/warehouses/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "warehouses", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Stocks",
       "item": [
+        {
+          "name": "Get all stocks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks"]
+            }
+          }
+        },
+        {
+          "name": "Create stock",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouse\": {\n    \"id\": 1\n  },\n  \"item\": {\n    \"id\": 1\n  },\n  \"quantity\": 10\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/stocks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks"]
+            }
+          }
+        },
+        {
+          "name": "Update stock (change quantity)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouse\": {\n    \"id\": 1\n  },\n  \"item\": {\n    \"id\": 1\n  },\n  \"quantity\": 20\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete stock",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "1"]
+            }
+          }
+        },
+        {
+          "name": "Move item between warehouses",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/stocks/move?fromWarehouseId=1&toWarehouseId=2&itemId=1&quantity=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "stocks", "move"],
+              "query": [
+                {"key": "fromWarehouseId", "value": "1"},
+                {"key": "toWarehouseId", "value": "2"},
+                {"key": "itemId", "value": "1"},
+                {"key": "quantity", "value": "5"}
+              ]
+            }
+          }
+        },
         {
           "name": "Reserve item",
           "request": {
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/stocks/reserve?warehouseId=5&itemId=1&quantity=5",
+              "raw": "http://localhost:8080/api/stocks/reserve?warehouseId=1&itemId=1&quantity=3",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
               "path": ["api", "stocks", "reserve"],
               "query": [
-                {"key": "warehouseId", "value": "5"},
+                {"key": "warehouseId", "value": "1"},
                 {"key": "itemId", "value": "1"},
-                {"key": "quantity", "value": "5"}
+                {"key": "quantity", "value": "3"}
               ]
             }
           }
@@ -32,11 +284,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/stocks/warehouse/5",
+              "raw": "http://localhost:8080/api/stocks/warehouse/1",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["api", "stocks", "warehouse", "5"]
+              "path": ["api", "stocks", "warehouse", "1"]
             }
           }
         },
@@ -46,32 +298,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/stocks/low-stock?threshold=15",
+              "raw": "http://localhost:8080/api/stocks/low-stock?threshold=10",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
               "path": ["api", "stocks", "low-stock"],
               "query": [
-                {"key": "threshold", "value": "15"}
-              ]
-            }
-          }
-        },
-        {
-          "name": "Check threshold",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:8080/api/stocks/check-threshold?warehouseId=5&itemId=1&threshold=5",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8080",
-              "path": ["api", "stocks", "check-threshold"],
-              "query": [
-                {"key": "warehouseId", "value": "5"},
-                {"key": "itemId", "value": "1"},
-                {"key": "threshold", "value": "5"}
+                {"key": "threshold", "value": "10"}
               ]
             }
           }
@@ -82,22 +315,118 @@
       "name": "Movements",
       "item": [
         {
-          "name": "Move item",
+          "name": "Get all movements",
           "request": {
-            "method": "POST",
+            "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/stocks/move?fromWarehouseId=3&toWarehouseId=5&itemId=1&quantity=10",
+              "raw": "http://localhost:8080/api/movements",
               "protocol": "http",
               "host": ["localhost"],
               "port": "8080",
-              "path": ["api", "stocks", "move"],
-              "query": [
-                {"key": "fromWarehouseId", "value": "3"},
-                {"key": "toWarehouseId", "value": "5"},
-                {"key": "itemId", "value": "1"},
-                {"key": "quantity", "value": "10"}
-              ]
+              "path": ["api", "movements"]
+            }
+          }
+        },
+        {
+          "name": "Create movement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromWarehouse\": {\n    \"id\": 1\n  },\n  \"toWarehouse\": {\n    \"id\": 2\n  },\n  \"item\": {\n    \"id\": 1\n  },\n  \"quantity\": 5\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/movements",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "movements"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Suppliers",
+      "item": [
+        {
+          "name": "Get all suppliers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/suppliers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "suppliers"]
+            }
+          }
+        },
+        {
+          "name": "Create supplier",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ООО Поставщик 1\",\n  \"contactInfo\": \"Телефон: +7 (123) 456-78-90\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/suppliers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "suppliers"]
+            }
+          }
+        },
+        {
+          "name": "Update supplier",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ООО Поставщик 1 обновлённый\",\n  \"contactInfo\": \"Телефон: +7 (123) 456-78-90\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/suppliers/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "suppliers", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete supplier",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/suppliers/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "suppliers", "1"]
             }
           }
         }
