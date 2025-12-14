@@ -12,22 +12,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@PreAuthorize("hasRole('ADMIN')") // Только ADMIN может обращаться ко всем методам по умолчанию
+@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
     @Autowired
     private UserRepository userRepo;
 
-    // Получить всех пользователей (только ADMIN)
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepo.findAll();
         return ResponseEntity.ok(users);
     }
 
-    // Получить текущего авторизованного пользователя (любой USER или ADMIN)
+
     @GetMapping("/me")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')") // USER и ADMIN могут получить себя
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> getCurrentUser(Authentication authentication) {
         String username = authentication.getName();
         User user = userRepo.findByUsername(username).orElse(null);
@@ -37,7 +36,6 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    // Обновить роль пользователя по ID (только ADMIN)
     @PutMapping("/{id}/role")
     public ResponseEntity<String> updateRole(@PathVariable Long id, @RequestParam String role) {
         User user = userRepo.findById(id).orElse(null);

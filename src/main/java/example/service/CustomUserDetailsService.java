@@ -16,9 +16,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Запрос пользователя: " + username); // Для отладки
         User user = userRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
+        System.out.println("Найден пользователь: " + user.getUsername() + ", роль: " + user.getRole()); // Для отладки
         return user; // Возвращаем сущность User (она реализует UserDetails)
     }
 }

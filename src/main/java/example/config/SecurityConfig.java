@@ -11,24 +11,25 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // ← Добавь эту аннотацию!
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomUserDetailsService userDetailsService) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/auth/**") // регистрация не требует CSRF
+                        .ignoringRequestMatchers("/api/auth/**")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/csrf/token").permitAll()
                         .requestMatchers("/api/items").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/warehouses").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/stocks").hasRole("ADMIN")
                         .requestMatchers("/api/movements").hasRole("ADMIN")
                         .requestMatchers("/api/suppliers").hasRole("ADMIN")
-                        .requestMatchers("/api/users").hasRole("ADMIN") // ← Теперь работает
+                        .requestMatchers("/api/users").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic.realmName("warehouse-realm"))
