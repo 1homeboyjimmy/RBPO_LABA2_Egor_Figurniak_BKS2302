@@ -17,6 +17,6 @@ spring:
 
 app:
   jwt:
-    secret: 8fG@3#kL9$mN2!pQ7^rT5&vX1%zA4*oI6
+    secret: ${JWT_SECRET}
     access-expiration-ms: 900000      # 15 минут
     refresh-expiration-ms: 604800000  # 7 дней
